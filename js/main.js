@@ -3,6 +3,9 @@ const infoDisplay = document.querySelector("#info");
 
 const startCells = ["", "", "", "", "", "", "", "", ""];
 
+let go = "circle";
+infoDisplay.textContent = "Circle goes first";
+
 function createBoard() {
   startCells.forEach((_cell, index) => {
     const cellElement = document.createElement("div");
@@ -18,6 +21,9 @@ createBoard();
 function addGo(e) {
   //   console.log(e.target);
   const goDisplay = document.createElement("div");
-  goDisplay.classList.add("cross");
+  goDisplay.classList.add(go);
   e.target.append(goDisplay); //append the class of circle to whatever was clicked
+  go = go === "circle" ? "cross" : "circle";
+  infoDisplay.textContent = `${go}'s turn`;
+  e.target.removeEventListener("click", addGo);
 }
