@@ -1,8 +1,70 @@
+const gameboard = document.querySelector("#gameboard");
+const gameInfo = document.querySelector("#info");
 
+const squares = ["", "", "", "", "", "", "", "", ""];
 
+function fillBoard() {
+  squares.forEach((_cell, index) => {
+    const squareCells = document.createElement("div");
+    squareCells.classList.add("square");
+    squareCells.id = index;
+    squareCells.addEventListener("click", addGo);
+    gameboard.append(squareCells);
+  });
+}
+fillBoard();
+let go = "circle";
+gameInfo.textContent = "Circle goes first";
 
+function addGo(e) {
+  const addShape = document.createElement("div");
+  addShape.classList.add(go);
+  e.target.append(addShape);
+  go = go === "circle" ? "cross" : "circle";
+  e.target.removeEventListener("click", addGo);
+  gameInfo.textContent = `it is ${go}'s turn`;
+  checkScore();
+}
 
+function checkScore() {
+  const allSquares = document.querySelectorAll(".square");
+  const winningCombos = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  winningCombos.forEach((combo) => {
+    let circleWins = combo.every((cell) =>
+      allSquares[cell].firstChild?.classList.contains("circle")
+    );
 
+    if (circleWins) {
+      gameInfo.textContent = "Circle WinsS";
+      allSquares.forEach((square) =>
+        square.replaceWith(square.cloneNode("true"))
+      );
+    }
+    return;
+  });
+  winningCombos.forEach((combo) => {
+    let crossWins = combo.every((cell) =>
+      allSquares[cell].firstChild?.classList.contains("cross")
+    );
+
+    if (crossWins) {
+      gameInfo.textContent = "Cross WinsS";
+      allSquares.forEach((square) =>
+        square.replaceWith(square.cloneNode("true"))
+      );
+    }
+    return;
+  });
+}
 // const gameboard = document.querySelector("#gameboard");
 // const infoDisplay = document.querySelector("#info");
 
